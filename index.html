@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Soul Yume</title>
+
   <style>
     body {
       margin: 0;
-      font-family: Arial;
-      background: linear-gradient(135deg, #1e1e2f, #3a0ca3);
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0f1a, #240046);
       color: white;
     }
 
@@ -24,6 +25,11 @@
       border-radius: 15px;
       width: 300px;
       text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    h2 {
+      color: #e0aaff;
     }
 
     input {
@@ -36,73 +42,77 @@
 
     button {
       padding: 10px 20px;
-      border: none;
       border-radius: 10px;
-      background: #7209b7;
-      color: white;
+      border: none;
+      margin: 5px;
       cursor: pointer;
+      background: #7b2cbf;
+      color: white;
     }
 
-    #main {
-      display: none;
-      text-align: center;
-      margin-top: 100px;
+    button:hover {
+      background: #5a189a;
     }
   </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="login" class="center">
+<div class="center">
   <div class="box">
-    <h2>Đăng nhập Soul Yume</h2>
+    <h2>Soul Yume</h2>
+
     <input id="username" placeholder="Tên người dùng">
     <input id="password" type="password" placeholder="Mật khẩu">
+
+    <br>
+
     <button onclick="login()">Đăng nhập</button>
+    <button onclick="register()">Đăng ký</button>
   </div>
 </div>
 
-<!-- MAIN -->
-<div id="main">
-  <h1>Chào mừng 👋</h1>
-  <p id="userText"></p>
-  <button onclick="logout()">Đăng xuất</button>
-</div>
-
 <script>
+  function register() {
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+
+    if (user === "" || pass === "") {
+      alert("Nhập đủ thông tin 😅");
+      return;
+    }
+
+    if (localStorage.getItem("user_" + user)) {
+      alert("Tài khoản đã tồn tại 😢");
+      return;
+    }
+
+    localStorage.setItem("user_" + user, pass);
+    alert("Đăng ký thành công 🎉");
+  }
+
   function login() {
     const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
 
-    if (user === "") {
-      alert("Nhập tên đi 😅");
+    const savedPass = localStorage.getItem("user_" + user);
+
+    if (savedPass === null) {
+      alert("Tài khoản chưa tồn tại 😢");
+      return;
+    }
+
+    if (savedPass !== pass) {
+      alert("Sai mật khẩu 😭");
       return;
     }
 
     localStorage.setItem("user", user);
-    showMain();
+
+    // 👉 chuyển sang trang chủ
+    window.location.href = "home.html";
   }
+</script>
 
-  function showMain() {
-    const user = localStorage.getItem("user");
-
-    if (user) {
-      document.getElementById("login").style.display = "none";
-      document.getElementById("main").style.display = "block";
-      document.getElementById("userText").innerText = "Xin chào " + user;
-    }
-  }
-
-  function logout() {
-   function login() {
-  const user = document.getElementById("username").value;
-
-  if (user === "") {
-    alert("Nhập tên đi 😅");
-    return;
-  }
-
-  localStorage.setItem("user", user);
-
-  window.location.href = "home.html";
-}
+</body>
+</html>
