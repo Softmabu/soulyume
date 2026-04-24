@@ -94,13 +94,15 @@
   }
 
   function logout() {
-    localStorage.removeItem("user");
-    location.reload();
+   function login() {
+  const user = document.getElementById("username").value;
+
+  if (user === "") {
+    alert("Nhập tên đi 😅");
+    return;
   }
 
-  // tự đăng nhập nếu đã có
-  showMain();
-</script>
+  localStorage.setItem("user", user);
 
-</body>
-</html>
+  window.location.href = "home.html";
+}
