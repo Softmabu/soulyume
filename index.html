@@ -28,6 +28,10 @@
       backdrop-filter: blur(10px);
     }
 
+    h2 {
+      color: #e0aaff;
+    }
+
     input {
       width: 90%;
       padding: 10px;
@@ -49,6 +53,14 @@
     button:hover {
       background: #5a189a;
     }
+
+    .google {
+      background: #db4437;
+    }
+
+    .google:hover {
+      background: #b83227;
+    }
   </style>
 </head>
 
@@ -65,14 +77,20 @@
 
     <button onclick="login()">Đăng nhập</button>
     <button onclick="register()">Đăng ký</button>
+    <br>
+    <button class="google" onclick="loginGoogle()">Đăng nhập Google</button>
   </div>
 </div>
 
-<!-- FIREBASE -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBFrN2yn6ZFeneuliaZioigM0jomQ9pOUA",
@@ -87,25 +105,33 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // ĐĂNG KÝ
+  // Đăng ký
   window.register = function () {
     const email = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        alert("Đăng ký thành công 🎉");
-      })
+      .then(() => alert("Đăng ký thành công 🎉"))
       .catch(err => alert(err.message));
   };
 
-  // ĐĂNG NHẬP
+  // Đăng nhập
   window.login = function () {
     const email = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
+      .then(() => window.location.href = "home.html")
+      .catch(err => alert(err.message));
+  };
+
+  // Google login
+  window.loginGoogle = function () {
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        alert("Xin chào " + result.user.email);
         window.location.href = "home.html";
       })
       .catch(err => alert(err.message));
