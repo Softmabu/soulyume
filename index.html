@@ -28,10 +28,6 @@
       backdrop-filter: blur(10px);
     }
 
-    h2 {
-      color: #e0aaff;
-    }
-
     input {
       width: 90%;
       padding: 10px;
@@ -62,7 +58,7 @@
   <div class="box">
     <h2>Soul Yume</h2>
 
-    <input id="username" placeholder="Tên người dùng">
+    <input id="username" placeholder="Email">
     <input id="password" type="password" placeholder="Mật khẩu">
 
     <br>
@@ -72,46 +68,48 @@
   </div>
 </div>
 
-<script>
-  function register() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    if (user === "" || pass === "") {
-      alert("Nhập đủ thông tin 😅");
-      return;
-    }
+  const firebaseConfig = {
+    apiKey: "AIzaSyBFrN2yn6ZFeneuliaZioigM0jomQ9pOUA",
+    authDomain: "soul-yume.firebaseapp.com",
+    projectId: "soul-yume",
+    storageBucket: "soul-yume.firebasestorage.app",
+    messagingSenderId: "20530015233",
+    appId: "1:20530015233:web:2ec85cbb30a8d053ada400",
+    measurementId: "G-ZKP0FZ8MEF"
+  };
 
-    if (localStorage.getItem("user_" + user)) {
-      alert("Tài khoản đã tồn tại 😢");
-      return;
-    }
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    localStorage.setItem("user_" + user, pass);
-    alert("Đăng ký thành công 🎉");
-  }
+  // ĐĂNG KÝ
+  window.register = function () {
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-  function login() {
-    const user = document.getElementById("username").value;
-    const pass = document.getElementById("password").value;
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        alert("Đăng ký thành công 🎉");
+      })
+      .catch(err => alert(err.message));
+  };
 
-    const savedPass = localStorage.getItem("user_" + user);
+  // ĐĂNG NHẬP
+  window.login = function () {
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-    if (savedPass === null) {
-      alert("Tài khoản chưa tồn tại 😢");
-      return;
-    }
-
-    if (savedPass !== pass) {
-      alert("Sai mật khẩu 😭");
-      return;
-    }
-
-    localStorage.setItem("user", user);
-
-    // 👉 chuyển sang trang chủ
-    window.location.href = "home.html";
-  }
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        window.location.href = "home.html";
+      })
+      .catch(err => alert(err.message));
+  };
 </script>
 
 </body>
