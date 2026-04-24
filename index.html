@@ -6,117 +6,101 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f0f1a, #240046);
+      font-family: Arial;
+      background: linear-gradient(135deg, #1e1e2f, #3a0ca3);
       color: white;
     }
 
-    /* Navbar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      padding: 20px 40px;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: #c77dff;
-    }
-
-    .nav-links a {
-      color: white;
-      margin-left: 20px;
-      text-decoration: none;
-    }
-
-    /* Main */
-    .main {
-      text-align: center;
-      margin-top: 120px;
-    }
-
-    h1 {
-      font-size: 60px;
-      margin-bottom: 10px;
-      color: #e0aaff;
-    }
-
-    p {
-      opacity: 0.8;
-    }
-
-    .btn {
-      margin-top: 30px;
-      padding: 15px 30px;
-      border-radius: 12px;
-      border: none;
-      background: #7b2cbf;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #5a189a;
-    }
-
-    /* Card preview */
-    .cards {
+    .center {
       display: flex;
       justify-content: center;
-      margin-top: 80px;
-      gap: 30px;
+      align-items: center;
+      height: 100vh;
     }
 
-    .card {
-      width: 200px;
-      padding: 20px;
+    .box {
+      background: rgba(0,0,0,0.5);
+      padding: 30px;
       border-radius: 15px;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
+      width: 300px;
+      text-align: center;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #7209b7;
+      color: white;
+      cursor: pointer;
+    }
+
+    #main {
+      display: none;
+      text-align: center;
+      margin-top: 100px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="navbar">
-    <div class="logo">Soul Yume</div>
-    <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Characters</a>
-      <a href="#">Chat</a>
-    </div>
+<!-- LOGIN -->
+<div id="login" class="center">
+  <div class="box">
+    <h2>Đăng nhập Soul Yume</h2>
+    <input id="username" placeholder="Tên người dùng">
+    <input id="password" type="password" placeholder="Mật khẩu">
+    <button onclick="login()">Đăng nhập</button>
   </div>
+</div>
 
-  <div class="main">
-    <h1>Soul Yume</h1>
-    <p>Thế giới sáng tạo, trò chuyện và cảm xúc</p>
-    <button class="btn" onclick="alert('Sắp có chat 👀')">
-      Bắt đầu
-    </button>
-  </div>
+<!-- MAIN -->
+<div id="main">
+  <h1>Chào mừng 👋</h1>
+  <p id="userText"></p>
+  <button onclick="logout()">Đăng xuất</button>
+</div>
 
-  <div class="cards">
-    <div class="card">
-      <h3>💬 Chat</h3>
-      <p>Trò chuyện với nhân vật AI</p>
-    </div>
+<script>
+  function login() {
+    const user = document.getElementById("username").value;
 
-    <div class="card">
-      <h3>🎭 Character</h3>
-      <p>Tạo nhân vật của riêng bạn</p>
-    </div>
+    if (user === "") {
+      alert("Nhập tên đi 😅");
+      return;
+    }
 
-    <div class="card">
-      <h3>🌌 World</h3>
-      <p>Khám phá thế giới Soul Yume</p>
-    </div>
-  </div>
+    localStorage.setItem("user", user);
+    showMain();
+  }
+
+  function showMain() {
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("main").style.display = "block";
+      document.getElementById("userText").innerText = "Xin chào " + user;
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem("user");
+    location.reload();
+  }
+
+  // tự đăng nhập nếu đã có
+  showMain();
+</script>
 
 </body>
 </html>
