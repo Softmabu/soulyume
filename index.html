@@ -121,7 +121,10 @@
     const password = document.getElementById("password").value;
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => window.location.href = "home.html")
+      .then(() => {
+        alert("Đăng nhập thành công 🎉");
+        window.location.href = "home.html";
+      })
       .catch(err => alert(err.message));
   };
 
